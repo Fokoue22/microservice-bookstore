@@ -39,11 +39,12 @@ This is a narrative that I have encountered firsthand – the initial excitement
 
 ## Architecture Diagram
 
-Microservices Diagram:
+Microservices Architecture:
+![Alt text](images/microservices-diagram.gif)
 [Microservices Architecture]
 
 Technology Stack Diagram:
-[Technology Stack]
+
 
 ## Getting Started
 
