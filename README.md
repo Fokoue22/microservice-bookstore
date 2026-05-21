@@ -61,6 +61,7 @@ Before I get started, I make sure I have the following prerequisites in place:
 To begin, I need an AWS account. If I don't have one, I head to the AWS website and sign up for an account.
 
 I need IAM user Access Key and Secret Key to be used with Terraform.
+![Alt text](images/access-key.png)
 
 **Important**: I never disclose my Access Keys to anyone, and I consistently utilize Secrets Managers.
 
