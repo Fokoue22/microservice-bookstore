@@ -100,6 +100,8 @@ In this workshop, we are using Terraform Cloud to let Terraform runs in a consis
 
 - I create my first organization and then set up a workspace in Terraform Cloud. This will help me manage my infrastructure as code and enable collaboration.
 
+![Alt text](images/workspace-in-Terraform-Cloud.png)
+
 ### Choosing a Workflow
 
 I choose **Version Control Workflow** to work with my repository on Github.
