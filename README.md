@@ -104,11 +104,13 @@ In this workshop, we are using Terraform Cloud to let Terraform runs in a consis
 
 ### Choosing a Workflow
 
-I choose **Version Control Workflow** to work with my repository on Github.
+- I choose **Version Control Workflow** to work with my repository on Github.
 
 - **Version Control Workflow** > Connect to Github > choose the repository > configure Setting
 
-In Advanced options, I configure the Terraform Working Directory as `terraform` since my Terraform code is inside the terraform directory.
+![Alt text](images/TerraformWorkingDirectory.png)
+
+- In Advanced options, I configure the Terraform Working Directory as `terraform` since my Terraform code is inside the terraform directory.
 
 Before talking about the Terraform files, I take time to read about [Terraform — Best Practices](https://www.terraform.io/docs/cloud/guides/recommended-practices/index.html).
 
