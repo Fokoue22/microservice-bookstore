@@ -90,6 +90,8 @@ git clone https://github.com/Fokoue22/microservice-bookstore.git
 
 In this workshop, we are using Terraform Cloud to let Terraform runs in a consistent and reliable environment.
 
+![Alt text](images/terraformworkflow.png)
+
 ### Setting up Terraform Cloud
 
 - First, create an account on Terraform Cloud if you don’t have one.
