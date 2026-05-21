@@ -88,15 +88,15 @@ git clone https://github.com/Fokoue22/microservice-bookstore.git
 
 ## Step-2: Terraform Workflow
 
-In this workshop, I am using Terraform Cloud to let Terraform runs in a consistent and reliable environment.
+In this workshop, we are using Terraform Cloud to let Terraform runs in a consistent and reliable environment.
 
 ### Setting up Terraform Cloud
 
-First, I create an account on Terraform Cloud if I don't have one.
+- First, create an account on Terraform Cloud if you don’t have one.
 
 [Terraform Cloud Sign up](https://app.terraform.io/signup) (Terraform Cloud has a Free License so I don't need to worry about pricing)
 
-I create my first organization and then set up a workspace in Terraform Cloud. This will help me manage my infrastructure as code and enable collaboration.
+- I create my first organization and then set up a workspace in Terraform Cloud. This will help me manage my infrastructure as code and enable collaboration.
 
 ### Choosing a Workflow
 
@@ -610,3 +610,6 @@ The dashboard can give me a Live fast response to any issue that could happen to
 License
 
 This project is licensed under the MIT License.
+
+## Author
+FOKOUE THOMAS
