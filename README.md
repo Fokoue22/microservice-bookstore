@@ -3,7 +3,7 @@
 Building a BookStore leveraging MicroServices.
 Step by Step BookStore DevOps Project.
 
-## 🚀 Project Overview
+## Project Overview
 
 I am focusing on constructing an AWS environment, setting up a Kubernetes cluster through Amazon Elastic Kubernetes Service (EKS), and implementing an efficient process for continuous integration and deployment.
 
@@ -22,7 +22,7 @@ To lay the groundwork, I am utilizing the Bookinfo demonstration application. Th
 
 I am trying to cover more Technologies and concepts in this project as possible.
 
-## 🔧 Problem Statement
+## Problem Statement
 
 In today's rapidly evolving tech landscape, I am mastering DevOps tools and technologies to streamline workflows, foster collaboration, and expedite project delivery. I have dedicated significant time and effort to completing courses on essential tools such as Terraform, ArgoCD, Istio, Kubernetes, and AWS, equipping myself with the theoretical knowledge needed to revolutionize my development processes.
 
@@ -30,14 +30,14 @@ However, what often remains unaddressed is the significant challenge that arises
 
 This is a narrative that I have encountered firsthand – the initial excitement of acquiring new skills, followed by the frustration of translating those skills into tangible results within my projects. This workshop aims to address this gap by offering a comprehensive guide not only on the 'how' of using these tools but also on the 'how' within the context of a holistic DevOps approach.
 
-## 💽 Technology Stack
+## Technology Stack
 
 - **Application Integration**: Simple Notification Service (SNS)
 - **Management & Governance**: CloudWatch
 - **Security, Identity & Compliance**: Secret Manager, SonarCloud (SonarQube)
 - **CI/CD**: Automate deployment using AWS Code Pipeline, AWS CodeBuild, AWS CodeCommit, AWS CodeArtifact
 
-## 📌 Architecture Diagram
+## Architecture Diagram
 
 Microservices Diagram:
 [Microservices Architecture]
@@ -45,7 +45,7 @@ Microservices Diagram:
 Technology Stack Diagram:
 [Technology Stack]
 
-## 🚦 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -63,7 +63,7 @@ I need IAM user Access Key and Secret Key to be used with Terraform.
 
 **Important**: I never disclose my Access Keys to anyone, and I consistently utilize Secrets Managers.
 
-## 📋 Table of Contents
+## Table of Contents
 
 - Step-1: Clone the repository
 - Step-2: Terraform Workflow
@@ -76,7 +76,7 @@ I need IAM user Access Key and Secret Key to be used with Terraform.
 - Step-9: Test my BookStore Application
 - Step-10: Monitoring
 
-## ✨ Step-1: Clone the Repository
+## Step-1: Clone the Repository
 
 I clone the project repository to my local machine:
 
@@ -84,7 +84,7 @@ I clone the project repository to my local machine:
 git clone https://github.com/cloudspaceacademy/microservice-bookstore.git
 ```
 
-## 🌟 Step-2: Terraform Workflow
+## Step-2: Terraform Workflow
 
 In this workshop, I am using Terraform Cloud to let Terraform runs in a consistent and reliable environment.
 
@@ -326,7 +326,7 @@ tags = {
 
 Tags are assigned to the created resources for organization and identification purposes.
 
-## 🚀 Step-3: Terraform Cloud Env Vars
+## Step-3: Terraform Cloud Env Vars
 
 I need to configure my organization with my Access Key and Secret Key. I can do it specific for the workspace or globally for the organization.
 
@@ -407,7 +407,7 @@ NAME                         STATUS   ROLES    AGE   VERSION
 ip-10-0-1-149.ec2.internal   Ready    <none>   64s   v1.27.3-eks-a5565ad
 ```
 
-## 💽 Step-4: Install Required CLIs
+## Step-4: Install Required CLIs
 
 I have installed the AWS CLI and kubectl. Now I need to install istioctl and argo CLI and install the required k8s resources.
 
@@ -488,7 +488,7 @@ Here's what each step does:
 6. **Update Kubernetes Deployment Image**: Updates the image tag in a Kubernetes deployment YAML file to match the built Docker image.
 7. **Commit and Push Changes**: Commits the changes made to the Kubernetes deployment YAML file and pushes them to the repository.
 
-## 🚀 Step-6: Update GitHub Repo with AWS Secrets
+## Step-6: Update GitHub Repo with AWS Secrets
 
 Under **Setting > Secrets and Variables > Actions**, I add my AWS secrets.
 
@@ -513,7 +513,7 @@ I need to check the manifests/kubernetes image part to match it with the Workflo
 
 I verify that my Docker images are being pushed to the ECR repository.
 
-## 💼 Step-7: Deploy the Microservices Manifests
+## Step-7: Deploy the Microservices Manifests
 
 Under `argocd/apps/services`, I find the Application CRD for argocd app to deploy my manifest resources to Kubernetes.
 
@@ -536,7 +536,7 @@ I can check the Argo CD home page and also check the resources in the EKS on AWS
 
 If I check any POD in staging Namespace, I will find that each one has two Containers.
 
-## 🔒 Step-8: Istio Proxy uses Envoy
+## Step-8: Istio Proxy uses Envoy
 
 Envoy proxies are deployed as sidecars to services, logically augmenting the services with Envoy's many built-in features, for example:
 
@@ -569,7 +569,7 @@ Envoy proxies are deployed as sidecars to services, logically augmenting the ser
 
 Under `manifests/networking/gateways`, I create an Argo CD app to deploy them.
 
-## 🗄️ Step-9: Test my BookStore Application
+## Step-9: Test my BookStore Application
 
 From the previous step, I can browse to the istio-ingressgateway url/productpage.
 
@@ -584,7 +584,7 @@ istio-ingressgateway   LoadBalancer   172.20.27.197    ae271cd157c214ab888061809
 
 It will be the elb/dns under External-IP. I will open the application on my browser using that same link.
 
-## 💻 Step-10: Monitoring
+## Step-10: Monitoring
 
 Under `argocd/apps/observability`, I create a NEW APP in the monitoring Namespace.
 
@@ -604,6 +604,7 @@ A comprehensive monitoring tool for Istio Service Mesh and also there is a lot t
 
 The dashboard can give me a Live fast response to any issue that could happen to any of my Microservices.
 
-## 📄 License
+## 
+License
 
 This project is licensed under the MIT License.
