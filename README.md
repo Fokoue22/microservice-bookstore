@@ -80,10 +80,10 @@ I need IAM user Access Key and Secret Key to be used with Terraform.
 
 ## Step-1: Clone the Repository
 
-I clone the project repository to my local machine:
+Please clone the project repository to your local machine:
 
 ```bash
-git clone https://github.com/cloudspaceacademy/microservice-bookstore.git
+git clone https://github.com/Fokoue22/microservice-bookstore.git
 ```
 
 ## Step-2: Terraform Workflow
