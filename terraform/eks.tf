@@ -1,77 +1,135 @@
-module "eks" {
-  source  = "terraform-aws-modules/eks/aws"
-  version = "~> 17.0"
+# EKS Cluster IAM Role
+resource "aws_iam_role" "eks_cluster_role" {
+  name = "eks-cluster-role"
 
-  cluster_name    = "my-cluster"
-  cluster_version = "1.27"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "eks.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
 
-  # Cluster endpoint access
-  cluster_endpoint_private_access = true
-  cluster_endpoint_public_access  = true
+resource "aws_iam_role_policy_attachment" "eks_cluster_policy" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+  role       = aws_iam_role.eks_cluster_role.name
+}
 
-  # VPC and networking
-  vpc_id = module.vpc.vpc_id
-  subnets = concat(module.vpc.private_subnets, module.vpc.public_subnets)
+# EKS Cluster
+resource "aws_eks_cluster" "my_cluster" {
+  name     = "my-cluster"
+  version  = "1.27"
+  role_arn = aws_iam_role.eks_cluster_role.arn
 
-  # Enable cluster logging
-  cluster_enabled_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
-
-  # EKS Managed Node Group(s)
-  node_groups_defaults = {
-    ami_type       = "AL2_x86_64"
-    disk_size      = 20
-    instance_types = ["t3.large"]
+  vpc_config {
+    subnet_ids              = concat(module.vpc.private_subnets, module.vpc.public_subnets)
+    endpoint_private_access = true
+    endpoint_public_access  = true
   }
 
-  node_groups = {
-    green = {
-      desired_capacity = 1
-      max_capacity     = 3
-      min_capacity     = 1
+  depends_on = [aws_iam_role_policy_attachment.eks_cluster_policy]
 
-      instance_types = ["t3.large"]
-      capacity_type  = "SPOT"
-
-      labels = {
-        Environment = "dev"
-        NodeGroup   = "green"
-      }
-
-      tags = {
-        "NodeGroup" = "green"
-      }
-    }
-  }
-
-  # Cluster tags
   tags = {
     Environment = "dev"
     Terraform   = "true"
   }
 }
 
+# EKS Node Group IAM Role
+resource "aws_iam_role" "eks_node_role" {
+  name = "eks-node-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "eks_worker_node_policy" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+  role       = aws_iam_role.eks_node_role.name
+}
+
+resource "aws_iam_role_policy_attachment" "eks_cni_policy" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+  role       = aws_iam_role.eks_node_role.name
+}
+
+resource "aws_iam_role_policy_attachment" "eks_container_registry_policy" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+  role       = aws_iam_role.eks_node_role.name
+}
+
+# EKS Node Group
+resource "aws_eks_node_group" "green" {
+  cluster_name    = aws_eks_cluster.my_cluster.name
+  node_group_name = "green-node-group"
+  node_role_arn   = aws_iam_role.eks_node_role.arn
+  subnet_ids      = module.vpc.private_subnets
+
+  scaling_config {
+    desired_size = 1
+    max_size     = 3
+    min_size     = 1
+  }
+
+  instance_types = ["t3.large"]
+  capacity_type  = "SPOT"
+
+  labels = {
+    Environment = "dev"
+    NodeGroup   = "green"
+  }
+
+  tags = {
+    Environment = "dev"
+    Terraform   = "true"
+    NodeGroup   = "green"
+  }
+
+  depends_on = [
+    aws_iam_role_policy_attachment.eks_worker_node_policy,
+    aws_iam_role_policy_attachment.eks_cni_policy,
+    aws_iam_role_policy_attachment.eks_container_registry_policy,
+  ]
+}
+
 # Outputs
 output "cluster_id" {
   description = "The ID/name of the EKS cluster"
-  value       = module.eks.cluster_id
+  value       = aws_eks_cluster.my_cluster.id
 }
 
 output "cluster_arn" {
   description = "The Amazon Resource Name (ARN) of the cluster"
-  value       = module.eks.cluster_arn
+  value       = aws_eks_cluster.my_cluster.arn
 }
 
 output "cluster_endpoint" {
   description = "Endpoint for EKS control plane"
-  value       = module.eks.cluster_endpoint
+  value       = aws_eks_cluster.my_cluster.endpoint
 }
 
 output "cluster_version" {
   description = "The Kubernetes server version for the cluster"
-  value       = module.eks.cluster_version
+  value       = aws_eks_cluster.my_cluster.version
 }
 
 output "cluster_security_group_id" {
   description = "Security group ID attached to the EKS cluster"
-  value       = module.eks.cluster_security_group_id
+  value       = aws_eks_cluster.my_cluster.vpc_config[0].cluster_security_group_id
 }
