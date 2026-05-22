@@ -459,6 +459,21 @@ After the apply completes successfully, I verify in the AWS Management Console t
 
    - Verify "my-ecr-repo" exists
 
+5. **Note the ECR Repository URL** - I'll need this for Step-5
+
+### 5. Troubleshooting Common Issues
+
+**Issue**: Apply fails with "InvalidParameterException"
+
+- **Solution**: Check that my AWS credentials are correct in Terraform Cloud
+
+**Issue**: EKS cluster creation times out
+
+- **Solution**: This is normal, EKS can take 15-30 minutes. Wait for it to complete
+
+**Issue**: "Error: error reading EC2 Subnet"
+
+- **Solution**: Check that my AWS IAM user has sufficient permissions (EC2, VPC, EKS, IAM permissions needed)
 
 ### 6. Deploy EKS-Manage EC2 Instance
 
