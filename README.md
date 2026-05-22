@@ -390,6 +390,8 @@ terraform apply tfplan
 ```
 ![Alt text](images/StartNewrun.png)
 
+![Alt text](images/Reviewtheplan-and-confirm.png)
+
 **What happens during apply:**
 - Terraform creates the VPC with subnets
 - Provisions the EKS cluster (this takes 15-30 minutes)
