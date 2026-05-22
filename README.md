@@ -435,6 +435,29 @@ organization = "microservice-bookstore"  # Change this to my actual org name
 
 **Region**: The configuration uses `us-east-1`. If I want a different region, update it in `terraform.tf`
 
+### 4. Check AWS Resources Creation
+
+After the apply completes successfully, I verify in the AWS Management Console that my defined resources have been created as intended:
+
+1. **Go to AWS Console** (https://console.aws.amazon.com)
+
+2. **Check VPC**:
+
+   - Navigate to VPC > Your VPCs
+
+   - Verify "my-vpc" exists with CIDR 10.0.0.0/16
+
+3. **Check EKS**:
+
+   - Navigate to EKS > Clusters
+
+   - Verify "my-cluster" exists and is in ACTIVE state
+
+4. **Check ECR**:
+
+   - Navigate to ECR > Repositories
+
+   - Verify "my-ecr-repo" exists
 
 
 ### 6. Deploy EKS-Manage EC2 Instance
