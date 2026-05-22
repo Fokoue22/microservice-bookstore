@@ -127,7 +127,7 @@ This Terraform configuration block includes settings for Terraform Cloud and con
 ```hcl
 terraform {
   cloud {
-    organization = "devops-project-org"
+    organization = "microservice-bookstore"
 
     workspaces {
       name = "devops-project-workspace"
