@@ -5,8 +5,11 @@ module "eks" {
   cluster_name    = "my-cluster"
   cluster_version = "1.27"
 
+  # Cluster endpoint access
+  cluster_endpoint_private_access = true
   cluster_endpoint_public_access  = true
 
+  # Cluster addons
   cluster_addons = {
     coredns = {
       most_recent = true
@@ -19,44 +22,44 @@ module "eks" {
     }
   }
 
-  vpc_id                   = module.vpc.vpc_id
-  subnet_ids               = module.vpc.private_subnets
-  control_plane_subnet_ids = module.vpc.public_subnets
+  # VPC and networking
+  vpc_id     = module.vpc.vpc_id
+  subnet_ids = concat(module.vpc.private_subnets, module.vpc.public_subnets)
 
   # EKS Managed Node Group(s)
-  eks_managed_node_group_defaults = {
-    instance_types = ["m6i.large", "m5.large", "m5n.large", "t3.large"]
-  }
-
   eks_managed_node_groups = {
     green = {
-      name            = "green"
+      name           = "green-node-group"
       use_name_prefix = true
-
+      
       min_size     = 1
-      max_size     = 10
+      max_size     = 3
       desired_size = 1
 
       instance_types = ["t3.large"]
       capacity_type  = "SPOT"
 
+      disk_size = 20
+
       labels = {
         Environment = "dev"
+        NodeGroup   = "green"
       }
 
       tags = {
-        "ExtraTag" = "green"
+        "NodeGroup" = "green"
       }
     }
   }
 
+  # Cluster tags
   tags = {
     Environment = "dev"
     Terraform   = "true"
   }
 }
 
-# Output the cluster endpoint and name
+# Outputs
 output "cluster_id" {
   description = "The ID/name of the EKS cluster"
   value       = module.eks.cluster_id
@@ -75,4 +78,9 @@ output "cluster_endpoint" {
 output "cluster_version" {
   description = "The Kubernetes server version for the cluster"
   value       = module.eks.cluster_version
+}
+
+output "cluster_security_group_id" {
+  description = "Security group ID attached to the EKS cluster"
+  value       = module.eks.cluster_security_group_id
 }
