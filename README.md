@@ -356,7 +356,7 @@ Now I am ready to start the Plan:
 
 I verify in the AWS Management Console that my defined resources have been created as intended.
 
-### Deploy EKS-Manage EC2 Instance
+**3. Deploy EKS-Manage EC2 Instance:**
 
 Of course it doesn't have to be an EC2 instance, I can use my Terminal.
 
