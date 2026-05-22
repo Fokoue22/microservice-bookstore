@@ -345,7 +345,7 @@ I do it globally now for the organization by creating a Variable Set:
 
 ![Alt text](images/Env-VariableSet.png)
 
-### Plan and Apply Terraform Code
+**1. Plan and Apply Terraform Code:**
 
 Now I am ready to start the Plan:
 
