@@ -339,7 +339,7 @@ Tags are assigned to the created resources for organization and identification p
 I need to configure my organization with my Access Key and Secret Key. I can do it specific for the workspace or globally for the organization.
 
 I do it globally now for the organization by creating a Variable Set:
-- Under the organization setting, I go to Variable sets and Create a new one
+- Under the organization setting, I go to Variable sets and Create a new one with the name `AWS_Credentials`
 
 ### Plan and Apply Terraform Code
 
