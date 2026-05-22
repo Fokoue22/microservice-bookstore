@@ -418,6 +418,23 @@ When I apply the Terraform configuration, the following AWS resources will be cr
 - For storing Docker images
 - Image tag mutability set to MUTABLE
 
+### 3. Important Notes Before Applying
+
+⚠️ **Cost Warning**: This will incur AWS charges:
+- EKS cluster: ~$0.10/hour
+- NAT gateways: ~$0.045/hour per gateway
+- EC2 instances (node group): ~$0.10/hour per instance
+- Data transfer charges may apply
+
+⚠️ **Update terraform.tf**: Make sure the organization name matches my Terraform Cloud organization:
+```hcl
+organization = "microservice-bookstore"  # Change this to my actual org name
+```
+
+⚠️ **AWS Credentials**: Ensure my AWS Access Key and Secret Key are correctly set in Terraform Cloud Variable Sets
+
+⚠️ **Region**: The configuration uses `us-east-1`. If I want a different region, update it in `terraform.tf`
+
 
 
 ### 6. Deploy EKS-Manage EC2 Instance
