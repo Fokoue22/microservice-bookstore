@@ -343,6 +343,8 @@ I do it globally now for the organization by creating a Variable Set:
 - under *Variable set scope* i selected `Apply to all project and workspaces`
 - Then i added two *variable* ``my Access Key and Secret Key`` all under the Category of **Environment variable**
 
+![Alt text](images/Env-VariableSet.png)
+
 ### Plan and Apply Terraform Code
 
 Now I am ready to start the Plan:
