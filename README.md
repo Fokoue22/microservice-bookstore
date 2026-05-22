@@ -345,26 +345,93 @@ I do it globally now for the organization by creating a Variable Set:
 
 ![Alt text](images/Env-VariableSet.png)
 
-**1. Plan and Apply Terraform Code:**
+### 1. Plan and Apply Terraform Code
 
-Now I am ready to start the Plan:
+Now I am ready to start the Plan. I have two options to execute this:
 
-1. Review the Plan resources
-2. Confirm & Apply
+#### Option A: Using Terraform Cloud UI (Recommended for beginners)
 
-**2. Check AWS Resources Creation:**
+This is the easiest approach if I'm using Terraform Cloud with Version Control Workflow:
 
-I verify in the AWS Management Console that my defined resources have been created as intended.
+1. **Go to Terraform Cloud** (https://app.terraform.io)
+2. **Navigate to my workspace**: `devops-project-workspace`
+3. **Click "Queue plan"** button
+4. **Terraform will automatically**:
+   - Pull my code from GitHub
+   - Run `terraform plan` (shows what will be created)
+   - Display the plan in the UI
+5. **Review the plan** - I'll see all the AWS resources that will be created:
+   - VPC with 3 public and 3 private subnets
+   - NAT gateways and VPN gateway
+   - EKS cluster with managed node groups
+   - ECR repository
+   - Fargate profiles
+6. **Click "Confirm & Apply"** to create the resources
+7. **Wait** for the apply to complete (usually 15-30 minutes for EKS)
 
-**3. Deploy EKS-Manage EC2 Instance:**
+#### Option B: Using Terminal (CLI-driven Workflow)
 
-Of course it doesn't have to be an EC2 instance, I can use my Terminal.
+If I prefer to manage Terraform from my local machine:
 
-I set up this instance to manage my EKS cluster from.
+```bash
+# Navigate to terraform directory
+cd microservice-bookstore/terraform
 
-**Deploy ubuntu instance**
+# Initialize Terraform (downloads modules and providers)
+terraform init
 
-I install tools like kubectl (Kubernetes command-line tool), aws-cli (AWS Command Line Interface), and any other utilities I might need.
+# Create a plan (shows what will be created)
+terraform plan -out=tfplan
+
+# Review the plan output carefully to ensure everything looks correct
+
+# Apply the plan (creates AWS resources)
+terraform apply tfplan
+```
+
+**What happens during apply:**
+- Terraform creates the VPC with subnets
+- Provisions the EKS cluster (this takes 15-30 minutes)
+- Creates the ECR repository
+- Sets up NAT gateways and VPN gateway
+- Configures managed node groups and Fargate profiles
+
+### 2. What Gets Created
+
+When I apply the Terraform configuration, the following AWS resources will be created:
+
+**VPC (Virtual Private Cloud)**
+- 3 public subnets (for load balancers and NAT gateways)
+- 3 private subnets (for EKS nodes)
+- NAT gateways (for outbound internet access from private subnets)
+- VPN gateway (for VPN connectivity)
+- Internet Gateway
+- Route tables and associations
+
+**EKS Cluster** named "my-cluster"
+- Kubernetes version 1.27
+- 1 managed node group named "green" with t3.large instances (SPOT pricing)
+- Fargate profile for default namespace
+- CoreDNS, kube-proxy, and vpc-cni addons
+
+**ECR Repository** named "my-ecr-repo"
+- For storing Docker images
+- Image tag mutability set to MUTABLE
+
+
+
+### 6. Deploy EKS-Manage EC2 Instance
+
+Once my Terraform apply completes successfully, I need to set up a management instance to interact with my EKS cluster. This can be an EC2 instance or my local machine.
+
+**Option 1: Using an EC2 Instance**
+- Deploy an Ubuntu EC2 instance in my VPC
+- Install kubectl, aws-cli, and other tools on it
+
+**Option 2: Using My Local Machine**
+- I can use my Terminal directly without needing an EC2 instance
+
+I'll proceed with installing the necessary tools on my management machine.
 
 **Install aws-cli**
 
@@ -388,36 +455,44 @@ kubectl version --client
 
 **Configure AWS Credentials**
 
-I run `aws configure` and provide my AWS Access Key ID, Secret Access Key, default region, and output format.
+I run `aws configure` and provide my AWS Access Key ID, Secret Access Key, default region, and output format:
 
-**Configure kubectl**
+```bash
+aws configure
+# Enter:
+# AWS Access Key ID: [Your Access Key]
+# AWS Secret Access Key: [Your Secret Key]
+# Default region name: us-east-1
+# Default output format: json
+```
+
+**Configure kubectl to Connect to EKS**
 
 ```bash
 aws eks update-kubeconfig --name my-cluster --region us-east-1
 ```
 
-**Test kubectl by running**
+**Test kubectl Connection**
 
 ```bash
 kubectl get nodes
 ```
 
-If I get a "connection refused" error, I need to troubleshoot why my kubectl client can't talk with the EKS endpoint.
-
-**Hint**: Something is blocking the requests to the EKS endpoint.
-
-Now after I can talk to my EKS, I should add this fix to my Terraform code.
-
-Now I can run:
-
-```bash
-kubectl get nodes
-
-##OUTPUT##
-
+**Expected Output:**
+```
 NAME                         STATUS   ROLES    AGE   VERSION
 ip-10-0-1-149.ec2.internal   Ready    <none>   64s   v1.27.3-eks-a5565ad
+ip-10-0-2-150.ec2.internal   Ready    <none>   45s   v1.27.3-eks-a5565ad
 ```
+
+**Troubleshooting Connection Issues**
+
+If I get a "connection refused" error:
+- **Hint**: Something is blocking the requests to the EKS endpoint
+- **Solution**: Check my security groups and network ACLs
+- **Fix**: I may need to update my Terraform code to allow inbound traffic to the EKS control plane
+
+After I can successfully communicate with my EKS cluster, I'm ready to move to Step-4.
 
 ## Step-4: Install Required CLIs
 
