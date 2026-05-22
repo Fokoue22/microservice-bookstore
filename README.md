@@ -355,7 +355,7 @@ This is the easiest approach if I'm using Terraform Cloud with Version Control W
 
 1. **Go to Terraform Cloud** (https://app.terraform.io)
 2. **Navigate to my workspace**: `devops-project-workspace`
-3. **Click "Queue plan"** button
+3. **Click "+ New run"** leave everything by default and click the button `Start`
 4. **Terraform will automatically**:
    - Pull my code from GitHub
    - Run `terraform plan` (shows what will be created)
