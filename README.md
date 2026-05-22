@@ -340,6 +340,7 @@ I need to configure my organization with my Access Key and Secret Key. I can do 
 
 I do it globally now for the organization by creating a Variable Set:
 - Under the organization setting, I go to Variable sets and Create a new one with the name `AWS_Credentials`
+- under *Variable set scope* i selected `Apply to all project and workspaces`
 
 ### Plan and Apply Terraform Code
 
