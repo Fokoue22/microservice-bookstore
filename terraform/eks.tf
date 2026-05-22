@@ -29,61 +29,50 @@ module "eks" {
   }
 
   eks_managed_node_groups = {
-
     green = {
-      use_custom_launch_template = false
+      name            = "green"
+      use_name_prefix = true
+
       min_size     = 1
       max_size     = 10
       desired_size = 1
 
       instance_types = ["t3.large"]
       capacity_type  = "SPOT"
+
+      labels = {
+        Environment = "dev"
+      }
+
+      tags = {
+        "ExtraTag" = "green"
+      }
     }
   }
-
-  # Fargate Profile(s)
-  fargate_profiles = {
-    default = {
-      name = "default"
-      selectors = [
-        {
-          namespace = "default"
-        }
-      ]
-    }
-  }
-
-  # aws-auth configmap
-  manage_aws_auth_configmap = false
-
-  aws_auth_roles = [
-    {
-      rolearn  = "arn:aws:iam::594182463744:role/role1"
-      username = "role1"
-      groups   = ["system:masters"]
-    },
-  ]
-
-  aws_auth_users = [
-    {
-      userarn  = "arn:aws:iam::594182463744:user/user1"
-      username = "user1"
-      groups   = ["system:masters"]
-    },
-    {
-      userarn  = "arn:aws:iam::594182463744:user/user2"
-      username = "user2"
-      groups   = ["system:masters"]
-    },
-  ]
-
-  aws_auth_accounts = [
-    "594182463744",
-    "888888888888",
-  ]
 
   tags = {
     Environment = "dev"
     Terraform   = "true"
   }
+}
+
+# Output the cluster endpoint and name
+output "cluster_id" {
+  description = "The ID/name of the EKS cluster"
+  value       = module.eks.cluster_id
+}
+
+output "cluster_arn" {
+  description = "The Amazon Resource Name (ARN) of the cluster"
+  value       = module.eks.cluster_arn
+}
+
+output "cluster_endpoint" {
+  description = "Endpoint for EKS control plane"
+  value       = module.eks.cluster_endpoint
+}
+
+output "cluster_version" {
+  description = "The Kubernetes server version for the cluster"
+  value       = module.eks.cluster_version
 }
