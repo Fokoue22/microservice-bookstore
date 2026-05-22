@@ -352,7 +352,7 @@ Now I am ready to start the Plan:
 1. Review the Plan resources
 2. Confirm & Apply
 
-### Check AWS Resources Creation
+**2. Check AWS Resources Creation:**
 
 I verify in the AWS Management Console that my defined resources have been created as intended.
 
