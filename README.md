@@ -137,7 +137,7 @@ terraform {
 ```
 
 In this part of the code, I am configuring Terraform Cloud settings:
-- **organization**: The name of my Terraform Cloud organization is set to "devops-project-org".
+- **organization**: The name of my Terraform Cloud organization is set to "microservice-bookstore".
 - **workspaces**: Within the organization, a workspace is configured with the name "devops-project-workspace". A workspace in Terraform Cloud is an isolated environment for managing infrastructure.
 
 **2. AWS Provider Configuration:**
