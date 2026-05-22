@@ -388,6 +388,7 @@ terraform plan -out=tfplan
 # Apply the plan (creates AWS resources)
 terraform apply tfplan
 ```
+![Alt text](images/StartNewrun.png)
 
 **What happens during apply:**
 - Terraform creates the VPC with subnets
