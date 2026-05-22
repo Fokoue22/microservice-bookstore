@@ -9,37 +9,28 @@ module "eks" {
   cluster_endpoint_private_access = true
   cluster_endpoint_public_access  = true
 
-  # Cluster addons
-  cluster_addons = {
-    coredns = {
-      most_recent = true
-    }
-    kube-proxy = {
-      most_recent = true
-    }
-    vpc-cni = {
-      most_recent = true
-    }
-  }
-
   # VPC and networking
-  vpc_id     = module.vpc.vpc_id
-  subnet_ids = concat(module.vpc.private_subnets, module.vpc.public_subnets)
+  vpc_id = module.vpc.vpc_id
+  subnets = concat(module.vpc.private_subnets, module.vpc.public_subnets)
+
+  # Enable cluster logging
+  cluster_enabled_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
 
   # EKS Managed Node Group(s)
-  eks_managed_node_groups = {
+  node_groups_defaults = {
+    ami_type       = "AL2_x86_64"
+    disk_size      = 20
+    instance_types = ["t3.large"]
+  }
+
+  node_groups = {
     green = {
-      name           = "green-node-group"
-      use_name_prefix = true
-      
-      min_size     = 1
-      max_size     = 3
-      desired_size = 1
+      desired_capacity = 1
+      max_capacity     = 3
+      min_capacity     = 1
 
       instance_types = ["t3.large"]
       capacity_type  = "SPOT"
-
-      disk_size = 20
 
       labels = {
         Environment = "dev"
