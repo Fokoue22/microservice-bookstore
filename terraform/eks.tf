@@ -33,6 +33,11 @@ resource "aws_eks_cluster" "my_cluster" {
     endpoint_public_access  = true
   }
 
+  # Disable auto mode
+  compute_config {
+    enabled = false
+  }
+
   depends_on = [aws_iam_role_policy_attachment.eks_cluster_policy]
 
   tags = {
