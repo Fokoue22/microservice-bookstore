@@ -21,21 +21,16 @@ resource "aws_iam_role_policy_attachment" "eks_cluster_policy" {
   role       = aws_iam_role.eks_cluster_role.name
 }
 
-# EKS Cluster
+# EKS Cluster with Auto Mode enabled
 resource "aws_eks_cluster" "my_cluster" {
   name     = "my-cluster"
-  version  = "1.28"
+  version  = "1.29"
   role_arn = aws_iam_role.eks_cluster_role.arn
 
   vpc_config {
     subnet_ids              = concat(module.vpc.private_subnets, module.vpc.public_subnets)
     endpoint_private_access = true
     endpoint_public_access  = true
-  }
-
-  # Disable auto mode
-  compute_config {
-    enabled = false
   }
 
   depends_on = [aws_iam_role_policy_attachment.eks_cluster_policy]
