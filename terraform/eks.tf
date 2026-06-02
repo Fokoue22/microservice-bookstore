@@ -1,6 +1,6 @@
 # EKS Cluster IAM Role
 resource "aws_iam_role" "eks_cluster_role" {
-  name = "eks-cluster-role"
+  name = "eks-cluster-role-my-cluster"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -24,7 +24,7 @@ resource "aws_iam_role_policy_attachment" "eks_cluster_policy" {
 # EKS Cluster
 resource "aws_eks_cluster" "my_cluster" {
   name     = "my-cluster"
-  version  = "1.29"
+  version  = "1.28"
   role_arn = aws_iam_role.eks_cluster_role.arn
 
   vpc_config {
@@ -43,7 +43,7 @@ resource "aws_eks_cluster" "my_cluster" {
 
 # EKS Node Group IAM Role
 resource "aws_iam_role" "eks_node_role" {
-  name = "eks-node-role"
+  name = "eks-node-role-my-cluster"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -80,6 +80,7 @@ resource "aws_eks_node_group" "green" {
   node_group_name = "green-node-group"
   node_role_arn   = aws_iam_role.eks_node_role.arn
   subnet_ids      = module.vpc.private_subnets
+  version         = aws_eks_cluster.my_cluster.version
 
   scaling_config {
     desired_size = 1
@@ -87,8 +88,10 @@ resource "aws_eks_node_group" "green" {
     min_size     = 1
   }
 
-  instance_types = ["t3.large"]
-  capacity_type  = "SPOT"
+  instance_types = ["t3.medium"]
+  capacity_type  = "ON_DEMAND"
+
+  disk_size = 20
 
   labels = {
     Environment = "dev"
